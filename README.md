@@ -6,13 +6,13 @@ HKU BEng(CS) final year project: A rating system using only comparisons
 
 ### Existing implementations
 
-|Implementation|Description|Features|Paper|
-|--------------|-----------|--------|-----|
-|[All Our Ideas](https://all-our-ideas.citizens.is/domain/1)|Survey creator|Raters can add new items, unequal votes per rater, rate by Thurstone-Mosteller|[Link](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0123483)|
-|[LMArena](https://lmarena.ai/)|AI model rating website|Website can add new models, unequal votes per rater, rate by Bradley-Terry|[Link](https://arxiv.org/abs/2403.04132)|
-|OpinionX ([Pair Rank](https://knowledge.opinionx.co/en/articles/5866366-pair-rank-scoring-examples-and-other-faqs), [Best-Worst](https://knowledge.opinionx.co/en/articles/9145942-best-worst-rank-free-maxdiff-analysis-surveys))|Survey creator|Calculates sample size required, rate by win rate||
-|[PollUnit](https://pollunit.com/en/posts/170/pairwise-comparison)|Survey creator|Rate by Elo rating||
-|[What is the Best Thing?](https://www.youtube.com/watch?v=ALy6e7GbDRQ)|Survey website|Unequal votes per rater, rate by win rate||
+|Implementation|Description|Rating|Features|Paper|
+|--------------|-----------|------|--------|-----|
+|[All Our Ideas](https://all-our-ideas.citizens.is/domain/1)|Survey creator|Win rate|Raters can add new items, unequal votes per rater|[Link](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0123483)|
+|[LMArena](https://lmarena.ai/)|AI model rating website|Bradley-Terry|Website can add new models, unequal votes per rater|[Link](https://arxiv.org/abs/2403.04132)|
+|OpinionX ([Pair Rank](https://knowledge.opinionx.co/en/articles/5866366-pair-rank-scoring-examples-and-other-faqs), [Best-Worst](https://knowledge.opinionx.co/en/articles/9145942-best-worst-rank-free-maxdiff-analysis-surveys))|Survey creator|Win rate|Calculates sample size required||
+|[PollUnit](https://pollunit.com/en/posts/170/pairwise-comparison)|Survey creator|Elo|||
+|[What is the Best Thing?](https://www.youtube.com/watch?v=ALy6e7GbDRQ)|Survey website|Win rate|Unequal votes per rater||
 
 ### Inference algorithms
 
