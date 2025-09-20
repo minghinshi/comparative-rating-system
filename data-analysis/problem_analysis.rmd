@@ -1,0 +1,104 @@
+# Instructions
+
+Download `Netflix_Dataset_Rating.csv` from the [Netflix Prize dataset](https://www.kaggle.com/datasets/rishitjavia/netflix-movie-rating-dataset) on Kaggle and put it in the same folder as this file.
+
+# Setup
+
+```{r}
+library(tidyverse)
+library(readr)
+library(lme4)
+
+set.seed(42)
+```
+
+```{r}
+ratings <- read_csv("Netflix_Dataset_Rating.csv")
+```
+
+# Summary statistics
+
+```{r}
+user_summary <- ratings |>
+  group_by(User_ID) |>
+  summarise(rating_count = n(), rating_mean = mean(Rating)) |>
+  arrange(rating_count)
+
+head(user_summary)
+tail(user_summary)
+```
+
+```{r}
+# Plot rating counts of each user
+user_summary |> ggplot(mapping = aes(rating_count)) + geom_histogram()
+```
+
+```{r}
+# Plot average ratings of each user
+user_summary |> ggplot(mapping = aes(rating_mean)) + geom_histogram()
+```
+
+```{r}
+movie_summary <- ratings |>
+  group_by(Movie_ID) |>
+  summarise(rating_count = n(), rating_mean = mean(Rating)) |>
+  arrange(rating_count)
+
+head(movie_summary)
+tail(movie_summary)
+```
+
+```{r}
+# Plot rating counts of each movie
+movie_summary |> ggplot(mapping = aes(rating_count)) + geom_histogram()
+```
+
+```{r}
+# Plot average ratings of each movie
+movie_summary |> ggplot(mapping = aes(rating_mean)) + geom_histogram()
+```
+
+# Decompose variance
+
+It is slow to fit a statistical model to 17 million observations.
+Let's randomly pick 10,000 users and use only their ratings.
+
+```{r}
+user_sample <- user_summary |>
+  slice_sample(n = 10000) |>
+  pull(User_ID)
+
+ratings <- ratings |> filter(User_ID %in% user_sample)
+```
+
+This takes around 1 minute on my computer.
+
+```{r}
+model <- lmer(Rating ~ 1 + (1 | Movie_ID) + (1 | User_ID), data = ratings, verbose = 1)
+ratings <- ratings |> mutate(fitted = fitted(model), residuals = resid(model))
+```
+
+```{r}
+summary(model)
+```
+
+1 million observations is slow to plot. Let's further sample 50,000 of them.
+
+```{r}
+plot_sample <- ratings |> slice_sample(n = 50000)
+```
+
+```{r}
+plot_sample |> ggplot(aes(fitted, residuals)) +
+  geom_point() + geom_hline(yintercept = 0)
+```
+
+```{r}
+plot_sample |> ggplot(aes(sample = residuals)) +
+  geom_qq() + geom_qq_line()
+```
+
+```{r}
+plot_sample |> ggplot(aes(x = fitted, y = Rating)) +
+  geom_point() + geom_smooth(method = "lm")
+```
